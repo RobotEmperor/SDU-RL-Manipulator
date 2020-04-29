@@ -261,7 +261,7 @@ if __name__ == '__main__':
                         if (epsilon > epsilonMinimumValue):
                             epsilon = epsilon * 0.999
 
-                        task_space_command_msg.data = [action, 0, 0, 0, 0, 0]
+                        task_space_command_msg.data = [action, 0.184324, 0.5875, -3.14159, 0, 0]
                         pub.publish(task_space_command_msg)
 
                         nextState, reward, gameOver, stateInfo = env.act(action)
