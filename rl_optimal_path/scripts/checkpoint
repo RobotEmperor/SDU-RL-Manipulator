@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/yik/catkin_ws/src/SDU-RL-Manipulator/rl_optimal_path/scripts/model.ckpt"
+all_model_checkpoint_paths: "/home/yik/catkin_ws/src/SDU-RL-Manipulator/rl_optimal_path/scripts/model.ckpt"
