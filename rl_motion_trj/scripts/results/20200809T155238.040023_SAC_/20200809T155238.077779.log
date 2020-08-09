@@ -1,0 +1,2 @@
+15:52:38.429 [INFO] (trainer.py:109) Total Epi:     1 Steps:    1000 Episode Steps:  1000 Return:  0.0000 FPS: 2855.60
+15:52:38.821 [INFO] (trainer.py:109) Total Epi:     2 Steps:    2000 Episode Steps:  1000 Return:  0.0000 FPS: 2566.21

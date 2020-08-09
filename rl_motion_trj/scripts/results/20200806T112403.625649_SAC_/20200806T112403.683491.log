@@ -1,0 +1,11 @@
+11:24:03.781 [INFO] (trainer.py:109) Total Epi:     1 Steps:     200 Episode Steps:   200 Return: -1427.7615 FPS: 2093.26
+11:24:03.846 [INFO] (trainer.py:109) Total Epi:     2 Steps:     400 Episode Steps:   200 Return: -1073.1950 FPS: 3245.67
+11:24:03.908 [INFO] (trainer.py:109) Total Epi:     3 Steps:     600 Episode Steps:   200 Return: -1660.0160 FPS: 3255.39
+11:24:03.970 [INFO] (trainer.py:109) Total Epi:     4 Steps:     800 Episode Steps:   200 Return: -1057.6246 FPS: 3263.22
+11:24:04.033 [INFO] (trainer.py:109) Total Epi:     5 Steps:    1000 Episode Steps:   200 Return: -1778.7239 FPS: 3255.74
+11:24:04.095 [INFO] (trainer.py:109) Total Epi:     6 Steps:    1200 Episode Steps:   200 Return: -1229.2690 FPS: 3261.83
+11:24:04.158 [INFO] (trainer.py:109) Total Epi:     7 Steps:    1400 Episode Steps:   200 Return: -1728.9902 FPS: 3254.21
+11:24:04.221 [INFO] (trainer.py:109) Total Epi:     8 Steps:    1600 Episode Steps:   200 Return: -1080.1660 FPS: 3240.14
+11:24:04.283 [INFO] (trainer.py:109) Total Epi:     9 Steps:    1800 Episode Steps:   200 Return: -884.8838 FPS: 3257.18
+11:24:04.346 [INFO] (trainer.py:109) Total Epi:    10 Steps:    2000 Episode Steps:   200 Return: -813.9937 FPS: 3224.52
+11:24:04.409 [INFO] (trainer.py:109) Total Epi:    11 Steps:    2200 Episode Steps:   200 Return: -909.3424 FPS: 3255.71

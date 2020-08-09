@@ -1,0 +1,10 @@
+15:53:35.835 [INFO] (trainer.py:109) Total Epi:     1 Steps:    1000 Episode Steps:  1000 Return:  0.0000 FPS: 5068.55
+15:53:36.000 [INFO] (trainer.py:109) Total Epi:     2 Steps:    2000 Episode Steps:  1000 Return:  0.0000 FPS: 6139.15
+15:53:36.157 [INFO] (trainer.py:109) Total Epi:     3 Steps:    3000 Episode Steps:  1000 Return:  0.0000 FPS: 6388.05
+15:53:36.308 [INFO] (trainer.py:109) Total Epi:     4 Steps:    4000 Episode Steps:  1000 Return:  0.0000 FPS: 6657.91
+15:53:36.455 [INFO] (trainer.py:109) Total Epi:     5 Steps:    5000 Episode Steps:  1000 Return:  0.0000 FPS: 6819.87
+15:53:36.598 [INFO] (trainer.py:109) Total Epi:     6 Steps:    6000 Episode Steps:  1000 Return:  0.0000 FPS: 7047.72
+15:53:36.732 [INFO] (trainer.py:109) Total Epi:     7 Steps:    7000 Episode Steps:  1000 Return:  0.0000 FPS: 7510.07
+15:53:36.866 [INFO] (trainer.py:109) Total Epi:     8 Steps:    8000 Episode Steps:  1000 Return:  0.0000 FPS: 7520.35
+15:53:37.000 [INFO] (trainer.py:109) Total Epi:     9 Steps:    9000 Episode Steps:  1000 Return:  0.0000 FPS: 7449.84
+15:53:37.138 [INFO] (trainer.py:109) Total Epi:    10 Steps:   10000 Episode Steps:  1000 Return:  0.0000 FPS: 7288.36

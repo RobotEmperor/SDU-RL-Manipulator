@@ -1,0 +1,173 @@
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+index 94a25f7..75d43de 100644
+--- a/.idea/vcs.xml
++++ b/.idea/vcs.xml
+@@ -2,5 +2,6 @@
+ <project version="4">
+   <component name="VcsDirectoryMappings">
+     <mapping directory="$PROJECT_DIR$" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$/soft-actor-critic" vcs="Git" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/rl_manipulator.zip b/rl_manipulator.zip
+deleted file mode 100644
+index c8f9750..0000000
+Binary files a/rl_manipulator.zip and /dev/null differ
+diff --git a/rl_motion_trj/scripts/rl_motion_trj_train.py b/rl_motion_trj/scripts/rl_motion_trj_train.py
+index 7c730e9..448b9c5 100755
+--- a/rl_motion_trj/scripts/rl_motion_trj_train.py
++++ b/rl_motion_trj/scripts/rl_motion_trj_train.py
+@@ -3,27 +3,32 @@ import gym
+ from tf2rl.algos.sac import SAC
+ from tf2rl.experiments.trainer import Trainer
+ 
+-
+ if __name__ == '__main__':
+     parser = Trainer.get_argument()
+     parser = SAC.get_argument(parser)
+-    parser.add_argument('--env-name', type=str, default="Pendulum-v0")
++    #parser.add_argument('--env-name', type=str, default="CartPole-v0")
++    parser.add_argument('--env-name', type=str, default="belt_task:belt-task-v0")
++
+     parser.set_defaults(batch_size=100)
+     parser.set_defaults(n_warmup=10000)
+-    parser.set_defaults(max_steps=3e6)
++    parser.set_defaults(max_steps=3e5)
+     args = parser.parse_args()
+ 
+     env = gym.make(args.env_name)
+     test_env = gym.make(args.env_name)
++
+     policy = SAC(
+         state_shape=env.observation_space.shape,
+         action_dim=env.action_space.high.size,
+-        gpu=args.gpu,
++        gpu=-1,
+         memory_capacity=args.memory_capacity,
+-        max_action=env.action_space.high[0],
++        max_action=env.action_space.high,
+         batch_size=args.batch_size,
+         n_warmup=args.n_warmup,
+         alpha=args.alpha,
+         auto_alpha=args.auto_alpha)
++
+     trainer = Trainer(policy, env, args, test_env=test_env)
++
++
+     trainer()
+\ No newline at end of file
+diff --git a/rl_motion_trj/scripts/sac_pendulum.zip b/rl_motion_trj/scripts/sac_pendulum.zip
+deleted file mode 100644
+index 0b87f0c..0000000
+Binary files a/rl_motion_trj/scripts/sac_pendulum.zip and /dev/null differ
+diff --git a/rl_motion_trj/scripts/simulation_test.py b/rl_motion_trj/scripts/simulation_test.py
+index 216b95c..d74bd22 100755
+--- a/rl_motion_trj/scripts/simulation_test.py
++++ b/rl_motion_trj/scripts/simulation_test.py
+@@ -1,33 +1,79 @@
+-import unittest
+-
++import numpy as np
++import gym
+ from tf2rl.algos.sac import SAC
+-from tests.algos.common import CommonOffPolContinuousAlgos
++from tf2rl.experiments.trainer import Trainer
++import tensorflow as tf
++
++parser = Trainer.get_argument()
++parser = SAC.get_argument(parser)
++# parser.add_argument('--env-name', type=str, default="CartPole-v0")
++parser.add_argument('--env-name', type=str, default="Pendulum-v0")
++parser.add_argument('--seed', type=int, default=42,
++                    help='random seed')
++parser.add_argument('--render', type=bool, default=False,
++                    help='set gym environment to render display')
++parser.add_argument('--verbose', type=bool, default=False,
++                    help='log execution details')
++parser.add_argument('--model_path', type=str, default='/home/yik/catkin_ws/src/SDU-RL-Manipulator/rl_motion_trj/scripts/results/',
++                    help='path to save model')
++parser.add_argument('--model_name', type=str,
++                    default=f'',
++                    help='name of the saved model')
++
++parser.set_defaults(batch_size=100)
++parser.set_defaults(n_warmup=10000)
++parser.set_defaults(max_steps=3e5)
++
++args = parser.parse_args()
++
++env = gym.make(args.env_name)
++test_env = gym.make(args.env_name)
++
++policy = SAC(
++    state_shape=env.observation_space.shape,
++    action_dim=env.action_space.high.size,
++    gpu=-1,
++    memory_capacity=args.memory_capacity,
++    max_action=env.action_space.high,
++    batch_size=args.batch_size,
++    n_warmup=args.n_warmup,
++    alpha=args.alpha,
++    auto_alpha=args.auto_alpha)
++
++to_restore = policy
++
++policy_checkpointer = tf.train.Checkpoint(policy=to_restore)
++policy_checkpointer.restore(tf.train.latest_checkpoint(args.model_path + args.model_name)).expect_partial()
++
++#print(actor_net.trainable_weights[0])
++
++
++#fake_policy = tf.train.Checkpoint(bias=to_restore)
++#fake_policy = tf.train.Checkpoint(bias=to_restore)
++#status = to_restore.restore(tf.train.latest_checkpoint(args.model_path + args.model_name)).expect_partial()
++
++while True:
++
++    # Instantiate the environment.
++    # TODO: fix this when env.action_space is not `Box`
+ 
++    # Observe state
++    current_state = env.reset()
+ 
+-class TestSAC(CommonOffPolContinuousAlgos):
+-    @classmethod
+-    def setUpClass(cls):
+-        super().setUpClass()
+-        cls.agent = SAC(
+-            state_shape=cls.continuous_env.observation_space.shape,
+-            action_dim=cls.continuous_env.action_space.low.size,
+-            batch_size=cls.batch_size,
+-            gpu=-1)
++    episode_reward = 0
++    done = False
++    while not done:
+ 
++        action_ = to_restore.get_action(current_state, True)
++        action = action_
+ 
+-class TestSACAutoAlpha(CommonOffPolContinuousAlgos):
+-    # TODO: Skip duplicated tests called in TestSAC
+-    @classmethod
+-    def setUpClass(cls):
+-        super().setUpClass()
+-        cls.agent = SAC(
+-            state_shape=cls.continuous_env.observation_space.shape,
+-            action_dim=cls.continuous_env.action_space.low.size,
+-            batch_size=cls.batch_size,
+-            auto_alpha=True,
+-            gpu=-1)
++        # Execute action, observe next state and reward
++        next_state, reward, done, _ = env.step(action)
+ 
++        episode_reward +=  reward
+ 
++        # Update current state
++        current_state = next_state
++        env.render()
+ 
+-if __name__ == '__main__':
+-    unittest.main()
+\ No newline at end of file
++    print(episode_reward)

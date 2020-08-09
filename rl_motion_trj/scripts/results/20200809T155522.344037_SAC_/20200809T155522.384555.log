@@ -1,0 +1,44 @@
+15:55:22.546 [INFO] (trainer.py:109) Total Epi:     1 Steps:    1000 Episode Steps:  1000 Return:  160.5708 FPS: 6259.99
+15:55:22.670 [INFO] (trainer.py:109) Total Epi:     2 Steps:    2000 Episode Steps:  1000 Return:  160.5405 FPS: 8183.64
+15:55:22.792 [INFO] (trainer.py:109) Total Epi:     3 Steps:    3000 Episode Steps:  1000 Return:  160.5526 FPS: 8276.51
+15:55:22.914 [INFO] (trainer.py:109) Total Epi:     4 Steps:    4000 Episode Steps:  1000 Return:  160.5689 FPS: 8229.66
+15:55:23.032 [INFO] (trainer.py:109) Total Epi:     5 Steps:    5000 Episode Steps:  1000 Return:  160.5017 FPS: 8543.55
+15:55:23.152 [INFO] (trainer.py:109) Total Epi:     6 Steps:    6000 Episode Steps:  1000 Return:  160.5266 FPS: 8386.81
+15:55:23.269 [INFO] (trainer.py:109) Total Epi:     7 Steps:    7000 Episode Steps:  1000 Return:  160.5273 FPS: 8550.05
+15:55:23.386 [INFO] (trainer.py:109) Total Epi:     8 Steps:    8000 Episode Steps:  1000 Return:  160.5457 FPS: 8650.07
+15:55:23.503 [INFO] (trainer.py:109) Total Epi:     9 Steps:    9000 Episode Steps:  1000 Return:  160.5593 FPS: 8585.35
+15:55:23.620 [INFO] (trainer.py:109) Total Epi:    10 Steps:   10000 Episode Steps:  1000 Return:  160.5586 FPS: 8558.60
+15:55:27.635 [INFO] (trainer.py:137) Evaluation Total Steps:   10000 Average Reward  158.6267 over  5 episodes
+15:55:33.365 [INFO] (trainer.py:109) Total Epi:    11 Steps:   11000 Episode Steps:  1000 Return:  160.6173 FPS: 102.63
+15:55:39.518 [INFO] (trainer.py:109) Total Epi:    12 Steps:   12000 Episode Steps:  1000 Return:  160.6396 FPS: 162.55
+15:55:45.177 [INFO] (trainer.py:109) Total Epi:    13 Steps:   13000 Episode Steps:  1000 Return:  160.6008 FPS: 176.72
+15:55:50.869 [INFO] (trainer.py:109) Total Epi:    14 Steps:   14000 Episode Steps:  1000 Return:  160.5959 FPS: 175.71
+15:55:56.551 [INFO] (trainer.py:109) Total Epi:    15 Steps:   15000 Episode Steps:  1000 Return:  160.5984 FPS: 176.02
+15:56:02.044 [INFO] (trainer.py:109) Total Epi:    16 Steps:   16000 Episode Steps:  1000 Return:  160.6177 FPS: 182.06
+15:56:07.388 [INFO] (trainer.py:109) Total Epi:    17 Steps:   17000 Episode Steps:  1000 Return:  160.6419 FPS: 187.18
+15:56:12.570 [INFO] (trainer.py:109) Total Epi:    18 Steps:   18000 Episode Steps:  1000 Return:  160.6090 FPS: 192.98
+15:56:17.738 [INFO] (trainer.py:109) Total Epi:    19 Steps:   19000 Episode Steps:  1000 Return:  160.6346 FPS: 193.53
+15:56:22.980 [INFO] (trainer.py:109) Total Epi:    20 Steps:   20000 Episode Steps:  1000 Return:  160.6218 FPS: 190.78
+15:56:24.408 [INFO] (trainer.py:137) Evaluation Total Steps:   20000 Average Reward  158.6267 over  5 episodes
+15:56:29.586 [INFO] (trainer.py:109) Total Epi:    21 Steps:   21000 Episode Steps:  1000 Return:  160.6102 FPS: 151.40
+15:56:34.825 [INFO] (trainer.py:109) Total Epi:    22 Steps:   22000 Episode Steps:  1000 Return:  160.6120 FPS: 190.92
+15:56:40.134 [INFO] (trainer.py:109) Total Epi:    23 Steps:   23000 Episode Steps:  1000 Return:  160.5827 FPS: 188.35
+15:56:46.829 [INFO] (trainer.py:109) Total Epi:    24 Steps:   24000 Episode Steps:  1000 Return:  160.6110 FPS: 149.40
+15:56:52.881 [INFO] (trainer.py:109) Total Epi:    25 Steps:   25000 Episode Steps:  1000 Return:  160.5964 FPS: 165.26
+15:56:59.274 [INFO] (trainer.py:109) Total Epi:    26 Steps:   26000 Episode Steps:  1000 Return:  160.5745 FPS: 156.43
+15:57:05.215 [INFO] (trainer.py:109) Total Epi:    27 Steps:   27000 Episode Steps:  1000 Return:  160.6022 FPS: 168.37
+15:57:12.181 [INFO] (trainer.py:109) Total Epi:    28 Steps:   28000 Episode Steps:  1000 Return:  160.6240 FPS: 143.56
+15:57:18.456 [INFO] (trainer.py:109) Total Epi:    29 Steps:   29000 Episode Steps:  1000 Return:  160.6069 FPS: 159.41
+15:57:24.660 [INFO] (trainer.py:109) Total Epi:    30 Steps:   30000 Episode Steps:  1000 Return:  160.5908 FPS: 161.21
+15:57:26.614 [INFO] (trainer.py:137) Evaluation Total Steps:   30000 Average Reward  158.6268 over  5 episodes
+15:57:32.814 [INFO] (trainer.py:109) Total Epi:    31 Steps:   31000 Episode Steps:  1000 Return:  160.6061 FPS: 122.68
+15:57:38.574 [INFO] (trainer.py:109) Total Epi:    32 Steps:   32000 Episode Steps:  1000 Return:  160.6045 FPS: 173.62
+15:57:44.457 [INFO] (trainer.py:109) Total Epi:    33 Steps:   33000 Episode Steps:  1000 Return:  160.6330 FPS: 170.02
+15:57:50.427 [INFO] (trainer.py:109) Total Epi:    34 Steps:   34000 Episode Steps:  1000 Return:  160.5813 FPS: 167.50
+15:57:56.166 [INFO] (trainer.py:109) Total Epi:    35 Steps:   35000 Episode Steps:  1000 Return:  160.5767 FPS: 174.27
+15:58:01.951 [INFO] (trainer.py:109) Total Epi:    36 Steps:   36000 Episode Steps:  1000 Return:  160.5948 FPS: 172.89
+15:58:07.899 [INFO] (trainer.py:109) Total Epi:    37 Steps:   37000 Episode Steps:  1000 Return:  160.5847 FPS: 168.14
+15:58:13.669 [INFO] (trainer.py:109) Total Epi:    38 Steps:   38000 Episode Steps:  1000 Return:  160.5848 FPS: 173.35
+15:58:20.577 [INFO] (trainer.py:109) Total Epi:    39 Steps:   39000 Episode Steps:  1000 Return:  160.6283 FPS: 144.76
+15:58:25.964 [INFO] (trainer.py:109) Total Epi:    40 Steps:   40000 Episode Steps:  1000 Return:  160.5838 FPS: 185.67
+15:58:27.388 [INFO] (trainer.py:137) Evaluation Total Steps:   40000 Average Reward  158.6266 over  5 episodes

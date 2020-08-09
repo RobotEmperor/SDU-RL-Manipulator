@@ -1,0 +1,49 @@
+diff --git a/rl_manipulator.zip b/rl_manipulator.zip
+deleted file mode 100644
+index c8f9750..0000000
+Binary files a/rl_manipulator.zip and /dev/null differ
+diff --git a/rl_motion_trj/scripts/rl_motion_trj_train.py b/rl_motion_trj/scripts/rl_motion_trj_train.py
+index 7c730e9..695e4f4 100755
+--- a/rl_motion_trj/scripts/rl_motion_trj_train.py
++++ b/rl_motion_trj/scripts/rl_motion_trj_train.py
+@@ -1,24 +1,25 @@
+ import gym
+ 
+-from tf2rl.algos.sac import SAC
++from tf2rl.algos.sac_discrete import SAC
+ from tf2rl.experiments.trainer import Trainer
+ 
+-
+ if __name__ == '__main__':
+     parser = Trainer.get_argument()
+     parser = SAC.get_argument(parser)
++    #parser.add_argument('--env-name', type=str, default="CartPole-v0")
+     parser.add_argument('--env-name', type=str, default="Pendulum-v0")
+     parser.set_defaults(batch_size=100)
+     parser.set_defaults(n_warmup=10000)
+-    parser.set_defaults(max_steps=3e6)
++    parser.set_defaults(max_steps=300)
+     args = parser.parse_args()
+ 
+     env = gym.make(args.env_name)
+     test_env = gym.make(args.env_name)
++
+     policy = SAC(
+         state_shape=env.observation_space.shape,
+         action_dim=env.action_space.high.size,
+-        gpu=args.gpu,
++        gpu=-1,
+         memory_capacity=args.memory_capacity,
+         max_action=env.action_space.high[0],
+         batch_size=args.batch_size,
+@@ -26,4 +27,5 @@ if __name__ == '__main__':
+         alpha=args.alpha,
+         auto_alpha=args.auto_alpha)
+     trainer = Trainer(policy, env, args, test_env=test_env)
++
+     trainer()
+\ No newline at end of file
+diff --git a/rl_motion_trj/scripts/sac_pendulum.zip b/rl_motion_trj/scripts/sac_pendulum.zip
+deleted file mode 100644
+index 0b87f0c..0000000
+Binary files a/rl_motion_trj/scripts/sac_pendulum.zip and /dev/null differ

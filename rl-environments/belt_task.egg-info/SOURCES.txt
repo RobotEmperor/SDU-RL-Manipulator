@@ -1,0 +1,6 @@
+setup.py
+belt_task.egg-info/PKG-INFO
+belt_task.egg-info/SOURCES.txt
+belt_task.egg-info/dependency_links.txt
+belt_task.egg-info/requires.txt
+belt_task.egg-info/top_level.txt

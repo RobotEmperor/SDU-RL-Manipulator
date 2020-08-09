@@ -1,0 +1,18 @@
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    ../../rl_manipulator.zip
+	modified:   rl_motion_trj_train.py
+	deleted:    sac_pendulum.zip
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	../../rl-environments/
+	results/
+
+no changes added to commit (use "git add" and/or "git commit -a")
