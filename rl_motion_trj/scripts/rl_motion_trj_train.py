@@ -11,7 +11,10 @@ if __name__ == '__main__':
 
     parser.set_defaults(batch_size=100)
     parser.set_defaults(n_warmup=10000)
-    parser.set_defaults(max_steps=3e5)
+    parser.set_defaults(max_steps=5e4)
+    parser.set_defaults(episode_max_steps =150)
+    #parser.set_defaults(alpha=0.9)
+    #parser.set_defaults(memory_capacity=1e3)
     args = parser.parse_args()
 
     env = gym.make(args.env_name)
@@ -26,7 +29,8 @@ if __name__ == '__main__':
         batch_size=args.batch_size,
         n_warmup=args.n_warmup,
         alpha=args.alpha,
-        auto_alpha=args.auto_alpha)
+        auto_alpha=args.auto_alpha,
+        lr=3e-3)
 
 
     trainer = Trainer(policy, env, args, test_env=test_env)

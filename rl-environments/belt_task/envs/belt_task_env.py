@@ -7,16 +7,14 @@ class BeltTaskEnv(gym.Env):
   metadata = {'render.modes': ['human']}
 
   def __init__(self):
-    self.init_ee_pose = np.array([1, 1, 1, 1, 1, 1], dtype=np.float32)
+    self.init_ee_pose = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1], dtype=np.float32)
     self.desired_ee_pose = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
-#    self.current_ee_pose = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
-#    self.error_ee_pose = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
     self.max_ee_pose = np.array([2, 2, 2, 2, 2, 2], dtype=np.float32)
-#    self.change_pose = np.array([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]], dtype=np.float32)
     self.max_change_pose = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1], dtype=np.float32)
-#    self.contact_force_torque = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
-#    self.max_contact_force_torque = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
-    #self.reward = np.array([1], dtype=np.float32)
+    self.max_ee_velocity = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1], dtype=np.float32)
+    self.contact_force_torque = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
+    self.max_contact_force_torque = np.array([5, 5, 5, 0.5, 0.5, 0.5], dtype=np.float32)
+    self.ee_pose = self.init_ee_pose
     self.reward = 0
 
     self.action_space = spaces.Box(
@@ -25,7 +23,7 @@ class BeltTaskEnv(gym.Env):
       dtype=np.float32
     )
 
-    high = np.array([1, 1, 1, 1, 1, 1], dtype=np.float32)
+    high = np.array([5, 5, 5, 5, 5, 5], dtype=np.float32)
 
     self.observation_space = spaces.Box(
       low=-high,
@@ -33,6 +31,7 @@ class BeltTaskEnv(gym.Env):
       dtype=np.float32
     )
 
+    self.task_completed = False
     self.safety_violation = False
     self.w_x = 0
     self.w_a = 0
@@ -43,7 +42,11 @@ class BeltTaskEnv(gym.Env):
     self.penalty = 0
     self.pre_defined_reward = 0
 
+    self.pre_ee_pose = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
+
     self.set_hyperparameters(1, 0, 0, 0, 0)
+
+    self.error_ee_pose = np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
 
   def set_hyperparameters(self, w_x, w_a, w_f, w_p, w_r):
     self.w_x = w_x
@@ -52,45 +55,62 @@ class BeltTaskEnv(gym.Env):
     self.w_p = w_p
     self.w_r = w_r
 
-  def norm_l_12(self, z):
-    max_norm = np.linalg.norm(self.max_ee_pose)
-    norm = 0.5*(np.linalg.norm(z)**2) + np.sqrt(0.1 + z**2)
-    norm = np.linalg.norm(norm)
+  def norm_l_12(self, z, max_value):
+    max_norm = np.sum(np.square(max_value))
+    norm = 0.5*(np.sum(np.square(z))) + np.sqrt(0.1 + np.sum(z)**2)
+
+    #print(norm)
 
     if norm >= max_norm:
-      return 1
-    elif norm <= 0:
       return 0
+    elif norm <= 0:
+      return 1
     else:
-      y = (1/(max_norm))*norm
+      y = -(1/(max_norm))*norm + 1
       return y
 
+
   def step(self, action):
-    ee_pose = self.state  # th := theta
     #rewards system
+    self.error_ee_pose = self.desired_ee_pose - self.ee_pose
 
-    error_ee_pose = self.desired_ee_pose - ee_pose
-    ##
-    change_pose = np.clip(action, -self.max_change_pose, self.max_change_pose)
+    change_pose = action
 
-    self.reward = self.w_x * self.norm_l_12(error_ee_pose / self.max_ee_pose)
+    ee_velocity = (self.pre_ee_pose - change_pose)/0.002
 
-    self.state = change_pose
+    check_vel_max = np.greater_equal(ee_velocity, self.max_ee_velocity)
+
+    for i in check_vel_max:
+      if i:
+        self.safety_violation = True
+      else:
+        self.safety_violation = False
+
+    if np.sum(self.error_ee_pose) == 0:
+      self.task_completed = True
+
+    if self.task_completed:
+      reward_k = 200
+    elif self.safety_violation:
+      reward_k = -10
+    else:
+      reward_k = 0
+
+    self.reward = self.w_x * self.norm_l_12(self.error_ee_pose / self.max_ee_pose, self.max_ee_pose) + self.w_a * self.norm_l_12(change_pose / self.max_change_pose,self.max_change_pose) + self.w_f * self.norm_l_12(self.contact_force_torque / self.max_contact_force_torque, self.max_contact_force_torque) + self.w_p * 0.1 + self.w_r * reward_k
+
+    self.ee_pose = change_pose
+
+    self.pre_ee_pose = self.ee_pose
+
+    #print('self.error_ee_pose :', self.error_ee_pose)
+    #print('self.reward :', action)
 
     return self._get_obs(), self.reward, False, {}
 
   def reset(self):
-    self.state = self.init_ee_pose
+    self.ee_pose = self.init_ee_pose
+    self.error_ee_pose = np.array([0,0,0,0,0,0], dtype=np.float32)
     return self._get_obs()
 
   def _get_obs(self):
-    #x, y, z, eaa_x, eaa_y, eaa_z = self.state
-    return  self.state
-
-"""
-    self.reward[num] = self.w_x * self.norm_l_12(
-      self.error_ee_pose[num] / self.max_ee_pose[num]) + self.w_a * self.norm_l_12(
-      self.change_pose[num] / self.max_change_pose[num]) + self.w_f * self.norm_l_12(
-      self.contact_force_torque[num] / self.max_contact_force_torque[
-        num]) + self.w_p * self.penalty + self.w_r * self.pre_defined_reward
-"""
+    return self.error_ee_pose

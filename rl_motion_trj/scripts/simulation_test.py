@@ -7,7 +7,7 @@ import tensorflow as tf
 parser = Trainer.get_argument()
 parser = SAC.get_argument(parser)
 # parser.add_argument('--env-name', type=str, default="CartPole-v0")
-parser.add_argument('--env-name', type=str, default="Pendulum-v0")
+parser.add_argument('--env-name', type=str, default="belt_task:belt-task-v0")
 parser.add_argument('--seed', type=int, default=42,
                     help='random seed')
 parser.add_argument('--render', type=bool, default=False,
@@ -20,16 +20,20 @@ parser.add_argument('--model_name', type=str,
                     default=f'',
                     help='name of the saved model')
 
+args = parser.parse_args()
+
 parser.set_defaults(batch_size=100)
 parser.set_defaults(n_warmup=10000)
-parser.set_defaults(max_steps=3e5)
+parser.set_defaults(max_steps=5e4)
+parser.set_defaults(episode_max_steps=150)
+parser.set_defaults(model_dir = args.model_path + args.model_name)
 
 args = parser.parse_args()
 
 env = gym.make(args.env_name)
 test_env = gym.make(args.env_name)
 
-policy = SAC(
+policy_ = SAC(
     state_shape=env.observation_space.shape,
     action_dim=env.action_space.high.size,
     gpu=-1,
@@ -38,42 +42,45 @@ policy = SAC(
     batch_size=args.batch_size,
     n_warmup=args.n_warmup,
     alpha=args.alpha,
-    auto_alpha=args.auto_alpha)
+    auto_alpha=args.auto_alpha,
+    lr=3e-4)
 
-to_restore = policy
-
-policy_checkpointer = tf.train.Checkpoint(policy=to_restore)
-policy_checkpointer.restore(tf.train.latest_checkpoint(args.model_path + args.model_name)).expect_partial()
-
-#print(actor_net.trainable_weights[0])
+trainer = Trainer(policy_, env, args, test_env=test_env)
 
 
-#fake_policy = tf.train.Checkpoint(bias=to_restore)
-#fake_policy = tf.train.Checkpoint(bias=to_restore)
-#status = to_restore.restore(tf.train.latest_checkpoint(args.model_path + args.model_name)).expect_partial()
+current_steps = 0
+max_steps = 5e4
+total_steps = 0
+episode_max_steps = 150
 
-while True:
+np.random.seed(0)
 
+while total_steps <= max_steps:
+    current_steps = 0
+    episode_reward = 0
     # Instantiate the environment.
-    # TODO: fix this when env.action_space is not `Box`
 
     # Observe state
     current_state = env.reset()
+    env.desired_ee_pose = np.random.rand(6)
+    #done = False
 
-    episode_reward = 0
-    done = False
-    while not done:
+    while current_steps <= episode_max_steps:
 
-        action_ = to_restore.get_action(current_state, True)
-        action = action_
+        current_steps += 1
+        total_steps += 1
+        action_ = trainer._policy.get_action(current_state, True)
 
         # Execute action, observe next state and reward
-        next_state, reward, done, _ = env.step(action)
+        next_state, reward, done, _ = env.step(action_)
 
-        episode_reward +=  reward
+        episode_reward += reward
 
         # Update current state
         current_state = next_state
-        #env.render()
 
-    print(episode_reward)
+        print(env.ee_pose)
+
+
+    #print(episode_reward)
+
