@@ -23,7 +23,7 @@ parser.add_argument('--model_name', type=str,
 args = parser.parse_args()
 
 parser.set_defaults(batch_size=100)
-parser.set_defaults(n_warmup=10000)
+parser.set_defaults(n_warmup=0)
 parser.set_defaults(max_steps=5e4)
 parser.set_defaults(episode_max_steps=150)
 parser.set_defaults(model_dir = args.model_path + args.model_name)
@@ -47,11 +47,12 @@ policy_ = SAC(
 
 trainer = Trainer(policy_, env, args, test_env=test_env)
 
+#trainer()
 
 current_steps = 0
-max_steps = 5e4
+max_steps = 10
 total_steps = 0
-episode_max_steps = 150
+episode_max_steps = 1
 
 np.random.seed(0)
 
@@ -62,7 +63,7 @@ while total_steps <= max_steps:
 
     # Observe state
     current_state = env.reset()
-    env.desired_ee_pose = np.random.rand(6)
+    #env.desired_ee_pose = np.random.rand(6)
     #done = False
 
     while current_steps <= episode_max_steps:
@@ -79,8 +80,7 @@ while total_steps <= max_steps:
         # Update current state
         current_state = next_state
 
-        print(env.ee_pose)
+        print(current_state)
 
 
     #print(episode_reward)
-

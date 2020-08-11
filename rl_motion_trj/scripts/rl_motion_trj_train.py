@@ -10,10 +10,10 @@ if __name__ == '__main__':
     parser.add_argument('--env-name', type=str, default="belt_task:belt-task-v0")
 
     parser.set_defaults(batch_size=100)
-    parser.set_defaults(n_warmup=10000)
+    parser.set_defaults(n_warmup=0)
     parser.set_defaults(max_steps=5e4)
-    parser.set_defaults(episode_max_steps =150)
-    #parser.set_defaults(alpha=0.9)
+    parser.set_defaults(episode_max_steps = 150)
+    #parser.set_defaults(alpha=0.99)
     #parser.set_defaults(memory_capacity=1e3)
     args = parser.parse_args()
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         n_warmup=args.n_warmup,
         alpha=args.alpha,
         auto_alpha=args.auto_alpha,
-        lr=3e-3)
+        lr=3e-4)
 
 
     trainer = Trainer(policy, env, args, test_env=test_env)
