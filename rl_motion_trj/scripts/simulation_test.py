@@ -43,18 +43,16 @@ policy_ = SAC(
     n_warmup=args.n_warmup,
     alpha=args.alpha,
     auto_alpha=args.auto_alpha,
-    lr=3e-4)
+    lr=1e-5)
 
 trainer = Trainer(policy_, env, args, test_env=test_env)
 
 #trainer()
 
 current_steps = 0
-max_steps = 10
+max_steps = 5
 total_steps = 0
-episode_max_steps = 1
-
-np.random.seed(0)
+episode_max_steps = 10
 
 while total_steps <= max_steps:
     current_steps = 0
@@ -65,11 +63,10 @@ while total_steps <= max_steps:
     current_state = env.reset()
     #env.desired_ee_pose = np.random.rand(6)
     #done = False
-
+    total_steps += 1
     while current_steps <= episode_max_steps:
 
         current_steps += 1
-        total_steps += 1
         action_ = trainer._policy.get_action(current_state, True)
 
         # Execute action, observe next state and reward
@@ -79,8 +76,8 @@ while total_steps <= max_steps:
 
         # Update current state
         current_state = next_state
+        print('step:', current_steps, 'current_state:', current_state)
 
-        print(current_state)
+    #print(current_state)
 
-
-    #print(episode_reward)
+    print(episode_reward)
